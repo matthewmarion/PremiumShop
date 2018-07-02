@@ -1,0 +1,6 @@
+name: ${project.name}
+version: ${project.version}
+main: com.moojm.premiumshop.PremiumShop
+
+commands:
+  pshop:

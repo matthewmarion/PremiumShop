@@ -1,0 +1,4 @@
+no-permission: '&cNo permission'
+only-console: '&cMust be ran from the console.'
+only-player: '&cMust be ran from a player.'
+create-shop: '&a&lSUCCESS &r&eShop id &b{id} &ehas been created at your location.'

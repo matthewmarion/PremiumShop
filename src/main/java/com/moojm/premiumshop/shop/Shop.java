@@ -1,6 +1,6 @@
 package com.moojm.premiumshop.shop;
 
-import com.moojm.premiumshop.PremiumShop;
+import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.utils.Utils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -12,8 +12,8 @@ public class Shop {
     private int id;
     private Location location;
 
-    public Shop(int id, Location location) {
-        this.id = id;
+    public Shop(Location location) {
+        this.id = getNextId();
         this.location = location;
     }
 
@@ -23,6 +23,15 @@ public class Shop {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    private int getNextId() {
+        int id = 0;
+        for (String key : ConfigManager.getShopConfig().getKeys(false)) {
+            int intId = Integer.parseInt(key);
+            id = intId + 1;
+        }
+        return id;
     }
 
     public Location getLocation() {
@@ -35,15 +44,16 @@ public class Shop {
 
     public void save() {
         double[] coords = Utils.parseLocation(location);
-        PremiumShop.getInstance().getConfig().set("shops." + id + ".location" + ".x", coords[0]);
-        PremiumShop.getInstance().getConfig().set("shops." + id + ".location" + ".y", coords[1]);
-        PremiumShop.getInstance().getConfig().set("shops." + id + ".location" + ".z", coords[2]);
-        PremiumShop.getInstance().getConfig().set("shops." + id + ".location" + ".world", location.getWorld().getName());
-        PremiumShop.getInstance().saveConfig();
+        ConfigManager.getShopConfig().set(id + ".location" + ".x", coords[0]);
+        ConfigManager.getShopConfig().set(id + ".location" + ".y", coords[1]);
+        ConfigManager.getShopConfig().set(id + ".location" + ".z", coords[2]);
+        ConfigManager.getShopConfig().set(id + ".location" + ".world", location.getWorld().getName());
+        ConfigManager.save(ConfigManager.shopf, ConfigManager.getShopConfig());
     }
 
     public void create() {
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "merchant");
+        String NPC = "Cowboy";
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, NPC);
         npc.spawn(location);
     }
 
