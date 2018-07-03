@@ -14,9 +14,11 @@ public class ConfigManager {
     public static File configf;
     public static File messagesf;
     public static File shopf;
+    public static File inventoryf;
     private static FileConfiguration config;
     private static FileConfiguration messages;
     private static FileConfiguration shop;
+    private static FileConfiguration inventory;
 
     public void loadConfig() {
         configf = new File(PremiumShop.getInstance().getDataFolder(), "config.yml");
@@ -28,9 +30,13 @@ public class ConfigManager {
         shopf = new File(PremiumShop.getInstance().getDataFolder(), "shop.yml");
         createNewFile(shopf, "shop.yml");
 
+        inventoryf = new File(PremiumShop.getInstance().getDataFolder(), "inventory.yml");
+        createNewFile(inventoryf, "inventory.yml");
+
         config = YamlConfiguration.loadConfiguration(configf);
         messages = YamlConfiguration.loadConfiguration(messagesf);
         shop = YamlConfiguration.loadConfiguration(shopf);
+        inventory = YamlConfiguration.loadConfiguration(inventoryf);
     }
 
     private void createNewFile(File file, String fileName) {
@@ -59,5 +65,6 @@ public class ConfigManager {
     public static FileConfiguration getConfig() { return config; }
     public static FileConfiguration getMessagesConfig() { return messages; }
     public static FileConfiguration getShopConfig() { return shop; }
+    public static FileConfiguration getInventoryConfig() { return inventory; }
 
 }

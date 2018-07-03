@@ -6,9 +6,9 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ShopCommand extends ShopCommandExecutor {
+public class ShopCreateCommand extends ShopCommandExecutor {
 
-    public ShopCommand() {
+    public ShopCreateCommand() {
         setSubCommand("create");
         setPermission("pshop.admin");
         setUsage("/pshop create");

@@ -15,7 +15,9 @@ public class CommandHandler implements CommandExecutor {
     private HashMap<String, ShopCommandExecutor> commands = new HashMap<String, ShopCommandExecutor>();
 
     public CommandHandler() {
-        commands.put("create", new ShopCommand());
+        commands.put("create", new ShopCreateCommand());
+        commands.put("category", new ShopCategoryCommand());
+        commands.put("product", new ShopProductCommand());
     }
 
     @Override

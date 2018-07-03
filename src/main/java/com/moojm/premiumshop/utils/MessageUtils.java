@@ -26,5 +26,13 @@ public class MessageUtils {
     public static final String ONLY_CONSOLE = Utils.getMessage("only-console");
     public static final String ONLY_PLAYER = Utils.getMessage("only-player");
     public static final String CREATE_SHOP = Utils.getMessage("create-shop");
+    public static final String NULL_CATEGORY = Utils.getMessage("null-category");
+    public static final String EXISTING_CATEGORY = Utils.getMessage("existing-category");
+    public static final String NEW_CATEGORY = Utils.getMessage("new-category");
+    public static final String REMOVED_CATEGORY = Utils.getMessage("removed-category");
+    public static final String EXISTING_PRODUCT = Utils.getMessage("existing-product");
+    public static final String NULL_PRODUCT = Utils.getMessage("null-product");
+    public static final String NEW_PRODUCT = Utils.getMessage("new-product");
+    public static final String REMOVED_PRODUCT = Utils.getMessage("removed-product");
 
 }
