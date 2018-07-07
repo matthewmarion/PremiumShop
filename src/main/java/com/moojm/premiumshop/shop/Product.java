@@ -1,7 +1,6 @@
 package com.moojm.premiumshop.shop;
 
 import com.moojm.premiumshop.config.ConfigManager;
-import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,6 +12,7 @@ public class Product implements ConfigurationSerializable {
     private String name;
     private double price;
     private ItemStack item;
+    private String command = "";
 
     public Product(String name, ItemStack item, double price) {
         this.name = name;
@@ -41,9 +41,18 @@ public class Product implements ConfigurationSerializable {
         return price;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
     public static Product load(String name, String category) {
         ItemStack item = ConfigManager.getInventoryConfig().getItemStack(category + ".products." + name + ".item");
         double price = ConfigManager.getInventoryConfig().getDouble(category + ".products." + name + ".price");
+        String command = ConfigManager.getInventoryConfig().getString(category + ".products." + name + ".command");
         return new Product(name, item, price);
     }
 
@@ -52,6 +61,7 @@ public class Product implements ConfigurationSerializable {
         Map<String, Object> map = new HashMap<>();
         map.put("price", Double.toString(price));
         map.put("item", item.serialize());
+        map.put("command", command);
         return map;
     }
 }

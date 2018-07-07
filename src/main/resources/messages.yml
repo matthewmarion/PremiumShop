@@ -1,6 +1,5 @@
 help:
   - '&ePremiumShop Help'
-  - '&e/pshop &bhelp'
   - '&e/pshop &bcategory new <name>'
   - '&e/pshop &bcategory remove <name>'
   - '&e/pshop &bproduct new <name> <category> <price>'
@@ -17,3 +16,5 @@ existing-product: '&c&lERROR &r&eProduct &b{name}&e already exists.'
 null-product: '&c&lERROR &r&eProduct &b{name}&e could not be found.'
 new-product: '&a&lSUCCESS &r&eNew product with name &b{name}&e created.'
 removed-product: '&a&lSUCCESS &r&eRemoved product &b{name}&e.'
+
+shop-name: '&6&lGold Shop'

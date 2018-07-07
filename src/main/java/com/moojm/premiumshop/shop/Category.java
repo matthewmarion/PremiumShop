@@ -2,6 +2,7 @@ package com.moojm.premiumshop.shop;
 
 import com.moojm.premiumshop.config.ConfigManager;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +12,19 @@ public class Category {
     private static List<Category> categories = new ArrayList<>();
 
     private String name;
+    private ItemStack item;
     private List<Product> products;
 
-    public Category(String name) {
+    public Category(String name, ItemStack item) {
         this.name = name;
+        this.item = item;
         this.products = new ArrayList<>();
         categories.add(this);
     }
 
-    public Category(String name, List<Product> products) {
+    public Category(String name, ItemStack item, List<Product> products) {
         this.name = name;
+        this.item = item;
         this.products = products;
         categories.add(this);
     }
@@ -34,10 +38,6 @@ public class Category {
         return null;
     }
 
-    public static boolean categoryExists(Category category) {
-        return categories.contains(category);
-    }
-
     public boolean containsProductName(String name) {
         for (Product product : products) {
             if (product.getName().equals(name)) {
@@ -49,7 +49,7 @@ public class Category {
 
     public static void save() {
         for (Category category : categories) {
-            System.out.println(category.getName());
+            ConfigManager.getInventoryConfig().set(category.getName() + ".item", category.getItem().serialize());
             for (Product product : category.getProducts()) {
                 ConfigManager.getInventoryConfig().set(category.getName() + ".products." + product.getName(), product.serialize());
             }
@@ -59,12 +59,13 @@ public class Category {
 
     public static void load() {
         for (String key : ConfigManager.getInventoryConfig().getKeys(false)) {
+            ItemStack item = ConfigManager.getInventoryConfig().getItemStack(key + ".item");
             ConfigurationSection categorySection = ConfigManager.getInventoryConfig().getConfigurationSection(key + ".products");
             List<Product> products = new ArrayList<>();
             for (String productName : categorySection.getKeys(false)) {
                 products.add(Product.load(productName, key));
             }
-            Category category = new Category(key, products);
+            Category category = new Category(key, item, products);
         }
     }
 
@@ -78,6 +79,10 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+
+    public ItemStack getItem() {
+        return item;
     }
 
     public List<Product> getProducts() {

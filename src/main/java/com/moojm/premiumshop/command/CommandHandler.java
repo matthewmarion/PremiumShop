@@ -18,6 +18,7 @@ public class CommandHandler implements CommandExecutor {
         commands.put("create", new ShopCreateCommand());
         commands.put("category", new ShopCategoryCommand());
         commands.put("product", new ShopProductCommand());
+        commands.put("cmd", new ShopCmdCommand());
     }
 
     @Override
@@ -29,6 +30,11 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
             String name = args[0].toLowerCase();
+
+            if (name.equalsIgnoreCase("help")) {
+                MessageUtils.tellList(sender, MessageUtils.HELP);
+                return true;
+            }
 
             if (!commands.containsKey(name)) {
                 return true;

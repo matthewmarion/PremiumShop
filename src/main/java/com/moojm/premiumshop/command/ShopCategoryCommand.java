@@ -4,6 +4,8 @@ import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.utils.MessageUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class ShopCategoryCommand extends ShopCommandExecutor {
 
@@ -11,12 +13,13 @@ public class ShopCategoryCommand extends ShopCommandExecutor {
         setSubCommand("category");
         setPermission("pshop.admin");
         setUsage("/pshop category <new|remove> <name>");
-        setBoth();
+        setPlayer(true);
         setLength(3);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
         String name = args[2];
         Category category = Category.getCategoryByName(name);
 
@@ -25,7 +28,12 @@ public class ShopCategoryCommand extends ShopCommandExecutor {
                 MessageUtils.tell(sender, MessageUtils.EXISTING_CATEGORY, null, null);
                 return;
             }
-            Category newCategory = new Category(name);
+            ItemStack item = player.getItemInHand();
+            if (item == null) {
+                MessageUtils.tell(sender, "&cItem cannot be null", null, null);
+                return;
+            }
+            Category newCategory = new Category(name, item);
             MessageUtils.tell(sender, MessageUtils.NEW_CATEGORY, "{name}", name);
         }
 

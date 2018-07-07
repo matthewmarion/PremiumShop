@@ -3,6 +3,7 @@ package com.moojm.premiumshop.command;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.MessageUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,6 +54,7 @@ public class ShopProductCommand extends ShopCommandExecutor {
             Product product = new Product(name, item, price);
             category.addProduct(product);
             MessageUtils.tell(sender, MessageUtils.NEW_PRODUCT, "{name}", name);
+            return;
         }
 
         if (args[1].equalsIgnoreCase("remove")) {
@@ -71,7 +73,7 @@ public class ShopProductCommand extends ShopCommandExecutor {
             Product product = Product.getProductByName(name, category);
             category.removeProduct(product);
             MessageUtils.tell(sender, MessageUtils.REMOVED_PRODUCT, "{name}", name);
+            return;
         }
-
     }
 }
