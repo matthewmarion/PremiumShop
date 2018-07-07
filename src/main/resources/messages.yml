@@ -16,5 +16,6 @@ existing-product: '&c&lERROR &r&eProduct &b{name}&e already exists.'
 null-product: '&c&lERROR &r&eProduct &b{name}&e could not be found.'
 new-product: '&a&lSUCCESS &r&eNew product with name &b{name}&e created.'
 removed-product: '&a&lSUCCESS &r&eRemoved product &b{name}&e.'
+create-cmd: '&a&lSUCCESS &r&eProduct command has been set to &b{cmd}&e.'
 
 shop-name: '&6&lGold Shop'

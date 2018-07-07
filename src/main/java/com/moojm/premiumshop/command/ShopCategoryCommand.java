@@ -3,6 +3,7 @@ package com.moojm.premiumshop.command;
 import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.utils.MessageUtils;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,7 @@ public class ShopCategoryCommand extends ShopCommandExecutor {
                 return;
             }
             ItemStack item = player.getItemInHand();
-            if (item == null) {
+            if (item == null || item.getType() == Material.AIR) {
                 MessageUtils.tell(sender, "&cItem cannot be null", null, null);
                 return;
             }

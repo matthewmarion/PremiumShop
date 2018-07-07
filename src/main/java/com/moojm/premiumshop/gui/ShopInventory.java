@@ -11,7 +11,7 @@ public class ShopInventory {
     private Inventory inv;
 
     public ShopInventory(Player player) {
-        final String shopName = Utils.getMessage("shop-name");
+        final String shopName = Utils.toColor(Utils.getMessage("shop-name"));
         inv = Bukkit.createInventory(null, 27, shopName);
         addCategories();
     }

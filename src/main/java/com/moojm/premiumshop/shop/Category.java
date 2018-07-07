@@ -1,6 +1,7 @@
 package com.moojm.premiumshop.shop;
 
 import com.moojm.premiumshop.config.ConfigManager;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -49,7 +50,10 @@ public class Category {
 
     public static void save() {
         for (Category category : categories) {
-            ConfigManager.getInventoryConfig().set(category.getName() + ".item", category.getItem().serialize());
+            ConfigManager.getInventoryConfig().set(category.getName() + ".item", category.getItem());
+            if (category.getProducts().size() == 0) {
+                ConfigManager.getInventoryConfig().set(category.getName() + ".products", new ArrayList<>());
+            }
             for (Product product : category.getProducts()) {
                 ConfigManager.getInventoryConfig().set(category.getName() + ".products." + product.getName(), product.serialize());
             }
@@ -62,9 +66,12 @@ public class Category {
             ItemStack item = ConfigManager.getInventoryConfig().getItemStack(key + ".item");
             ConfigurationSection categorySection = ConfigManager.getInventoryConfig().getConfigurationSection(key + ".products");
             List<Product> products = new ArrayList<>();
-            for (String productName : categorySection.getKeys(false)) {
-                products.add(Product.load(productName, key));
+            if (categorySection.getKeys(false).size() != 0) {
+                for (String productName : categorySection.getKeys(false)) {
+                    products.add(Product.load(productName, key));
+                }
             }
+
             Category category = new Category(key, item, products);
         }
     }

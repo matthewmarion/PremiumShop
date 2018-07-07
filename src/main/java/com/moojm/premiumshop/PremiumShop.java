@@ -4,6 +4,8 @@ import com.moojm.premiumshop.command.CommandHandler;
 import com.moojm.premiumshop.command.ShopCommandExecutor;
 import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.shop.Category;
+import com.moojm.premiumshop.shop.listeners.NPCListeners;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PremiumShop extends JavaPlugin {
@@ -16,6 +18,7 @@ public class PremiumShop extends JavaPlugin {
         configManager.loadConfig();
         loadShopInventory();
         registerCommands();
+        registerListeners();
     }
 
     public void onDisable() {
@@ -33,6 +36,10 @@ public class PremiumShop extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("pshop").setExecutor(new CommandHandler());
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new NPCListeners(), this);
     }
 
     public static PremiumShop getInstance() {

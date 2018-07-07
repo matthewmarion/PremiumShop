@@ -11,6 +11,7 @@ public class Shop {
 
     private int id;
     private Location location;
+    private static String NPC = "Cowboy";
 
     public Shop(Location location) {
         this.id = getNextId();
@@ -52,9 +53,12 @@ public class Shop {
     }
 
     public void create() {
-        String NPC = "Cowboy";
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, NPC);
         npc.spawn(location);
+    }
+
+    public static String getNPCName() {
+        return NPC;
     }
 
 }

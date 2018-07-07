@@ -32,6 +32,8 @@ public class ShopCmdCommand extends ShopCommandExecutor {
         for (int i = 3; i < args.length; i++) {
             cmdBuilder.append(args[i] + " ");
         }
-        product.setCommand(cmdBuilder.toString().trim());
+        String cmd = cmdBuilder.toString().trim();
+        product.setCommand(cmd);
+        MessageUtils.tell(sender, MessageUtils.CREATE_CMD, "{cmd}", cmd);
     }
 }

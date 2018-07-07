@@ -1,6 +1,7 @@
 package com.moojm.premiumshop.utils;
 
 import com.moojm.premiumshop.config.ConfigManager;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 
 import java.util.List;
@@ -13,6 +14,10 @@ public class Utils {
 
     public static List<String> getMessageList(String node) {
         return ConfigManager.getMessagesConfig().getStringList(node);
+    }
+
+    public static String toColor(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static double[] parseLocation(Location location) {

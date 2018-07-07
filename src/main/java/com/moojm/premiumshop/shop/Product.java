@@ -60,7 +60,7 @@ public class Product implements ConfigurationSerializable {
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("price", Double.toString(price));
-        map.put("item", item.serialize());
+        map.put("item", item);
         map.put("command", command);
         return map;
     }

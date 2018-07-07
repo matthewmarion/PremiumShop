@@ -47,5 +47,6 @@ public class MessageUtils {
     public static final String NULL_PRODUCT = Utils.getMessage("null-product");
     public static final String NEW_PRODUCT = Utils.getMessage("new-product");
     public static final String REMOVED_PRODUCT = Utils.getMessage("removed-product");
+    public static final String CREATE_CMD = Utils.getMessage("create-cmd");
 
 }
