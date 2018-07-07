@@ -1,6 +1,7 @@
 package com.moojm.premiumshop.gui;
 
 import com.moojm.premiumshop.shop.Category;
+import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,16 +9,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ShopInventory {
+public class ProductInventory {
 
     private Inventory inv;
     private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 11);
 
-    public ShopInventory(Player player) {
-        final String shopName = Utils.toColor(Utils.getMessage("product-shop-name"));
+    public ProductInventory(Player player, Category category) {
+        final String shopName = Utils.toColor(Utils.getMessage("shop-name"));
         inv = Bukkit.createInventory(null, 27, shopName);
         createBorder();
-        addCategories();
+        addProducts(category);
     }
 
     private void createBorder() {
@@ -26,10 +27,10 @@ public class ShopInventory {
         }
     }
 
-    private void addCategories() {
+    private void addProducts(Category category) {
         int index = 0;
-        for (Category category : Category.getCategories()) {
-            inv.setItem(10 + index, category.getItem());
+        for (Product product : category.getProducts()) {
+            inv.setItem(10 + index, product.getItem());
             index++;
         }
     }
@@ -37,5 +38,4 @@ public class ShopInventory {
     public Inventory getInventory() {
         return inv;
     }
-
 }
