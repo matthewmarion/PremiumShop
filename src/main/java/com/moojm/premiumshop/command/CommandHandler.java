@@ -23,6 +23,11 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("pshop")) {
+
+            if (args.length == 0) {
+                MessageUtils.tellList(sender, MessageUtils.HELP);
+                return true;
+            }
             String name = args[0].toLowerCase();
 
             if (!commands.containsKey(name)) {

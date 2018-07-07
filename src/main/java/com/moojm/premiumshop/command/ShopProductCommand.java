@@ -21,6 +21,12 @@ public class ShopProductCommand extends ShopCommandExecutor {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+
+        if (args.length < 4) {
+            player.sendMessage(ChatColor.RED + getUsage());
+            return;
+        }
+
         String name = args[2];
         String categoryName = args[3];
         Category category = Category.getCategoryByName(categoryName);

@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Category {
 
@@ -50,6 +49,7 @@ public class Category {
 
     public static void save() {
         for (Category category : categories) {
+            System.out.println(category.getName());
             for (Product product : category.getProducts()) {
                 ConfigManager.getInventoryConfig().set(category.getName() + ".products." + product.getName(), product.serialize());
             }

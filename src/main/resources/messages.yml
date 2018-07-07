@@ -1,3 +1,10 @@
+help:
+  - '&ePremiumShop Help'
+  - '&e/pshop &bhelp'
+  - '&e/pshop &bcategory new <name>'
+  - '&e/pshop &bcategory remove <name>'
+  - '&e/pshop &bproduct new <name> <category> <price>'
+  - '&e/pshop &bproduct remove <name> <category>'
 no-permission: '&cNo permission'
 only-console: '&cMust be ran from the console.'
 only-player: '&cMust be ran from a player.'

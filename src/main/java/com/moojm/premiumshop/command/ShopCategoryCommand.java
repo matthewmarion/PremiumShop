@@ -34,6 +34,7 @@ public class ShopCategoryCommand extends ShopCommandExecutor {
                 MessageUtils.tell(sender, MessageUtils.NULL_CATEGORY, null, null);
                 return;
             }
+            ConfigManager.getInventoryConfig().set(name, null);
             Category.remove(category);
             MessageUtils.tell(sender, MessageUtils.REMOVED_CATEGORY, "{name}", name);
         }
