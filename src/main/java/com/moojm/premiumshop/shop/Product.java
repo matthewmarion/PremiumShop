@@ -29,6 +29,15 @@ public class Product implements ConfigurationSerializable {
         return null;
     }
 
+    public static Product getProductByItem(ItemStack item, Category category) {
+        for (Product product : category.getProducts()) {
+            if (product.getItem().getItemMeta().getDisplayName().equals(item.getItemMeta().getDisplayName())) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

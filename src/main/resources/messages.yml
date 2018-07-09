@@ -18,5 +18,5 @@ new-product: '&a&lSUCCESS &r&eNew product with name &b{name}&e created.'
 removed-product: '&a&lSUCCESS &r&eRemoved product &b{name}&e.'
 create-cmd: '&a&lSUCCESS &r&eProduct command has been set to &b{cmd}&e.'
 
-shop-name: '&3&lGold Shop Categories'
+category-shop-name: '&3&lGold Shop Categories'
 product-shop-name: '&3&lGold Shop Products'

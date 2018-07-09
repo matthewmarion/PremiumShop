@@ -3,6 +3,7 @@ package com.moojm.premiumshop.shop.listeners;
 import com.moojm.premiumshop.gui.ProductInventory;
 import com.moojm.premiumshop.gui.ShopInventory;
 import com.moojm.premiumshop.shop.Category;
+import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -19,31 +20,47 @@ public class GUIListeners implements Listener {
     public void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Inventory inv = event.getInventory();
-        if (!isShopInventory(inv)) {
-            return;
-        }
-
-        if (isMovedOutInventory(event)) {
-            event.setCancelled(true);
+        if (!isCategoryInventory(inv) || isProductInventory(inv)) {
             return;
         }
 
         ItemStack item = event.getCurrentItem();
-        if (item == null || item.getType() == Material.AIR || itemIsBorder(item)) {
-            event.setCancelled(true);
+        if (!isValidClick(event, item)) {
             return;
         }
 
-        Category category = Category.getCategoryByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
-        if (category == null) {
+        if (isCategoryInventory(inv)) {
+            Category category = Category.getCategoryByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
+            if (category == null) {
+                event.setCancelled(true);
+                return;
+            }
             event.setCancelled(true);
+            selectCategory(player, category);
             return;
         }
-        event.setCancelled(true);
-        player.closeInventory();
 
+        if (isProductInventory(inv)) {
+        }
+
+    }
+
+    private void selectCategory(Player player, Category category) {
         ProductInventory productInventory = new ProductInventory(player, category);
         player.openInventory(productInventory.getInventory());
+    }
+
+    private boolean isValidClick(InventoryClickEvent event, ItemStack item) {
+        if (isMovedOutInventory(event)) {
+            event.setCancelled(true);
+            return false;
+        }
+
+        if (item == null || item.getType() == Material.AIR || itemIsBorder(item)) {
+            event.setCancelled(true);
+            return false;
+        }
+        return true;
     }
 
     private boolean isMovedOutInventory(InventoryClickEvent event) {
@@ -54,7 +71,11 @@ public class GUIListeners implements Listener {
         return item.getType() == Material.STAINED_GLASS_PANE;
     }
 
-    private boolean isShopInventory(Inventory inv) {
-        return inv.getName().equals(Utils.toColor(Utils.getMessage("shop-name")));
+    private boolean isCategoryInventory(Inventory inv) {
+        return inv.getName().equals(Utils.toColor(Utils.getMessage("category-shop-name")));
+    }
+
+    private boolean isProductInventory(Inventory inv) {
+        return inv.getName().equals(Utils.toColor(Utils.getMessage("product-shop-name")));
     }
 }
