@@ -5,10 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Utils {
 
@@ -35,15 +32,15 @@ public class Utils {
     public static String replaceCommandPlaceholders(Player player, String command) {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("{player}", player.getName());
-
-        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            String newCommand = command;
-            if (command.contains(entry.getKey())) {
-                newCommand = newCommand.replace(entry.getKey(), entry.getValue());
+        Iterator it = placeholders.entrySet().iterator();
+        String newCommand = command;
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            if (command.contains(pair.getKey().toString())) {
+                newCommand =  newCommand.replace(pair.getKey().toString(), pair.getValue().toString());
             }
-            return newCommand;
         }
-        return command;
+        return newCommand;
     }
 
 }

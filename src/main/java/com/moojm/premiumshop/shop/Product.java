@@ -13,12 +13,19 @@ public class Product implements ConfigurationSerializable {
     private String name;
     private double price;
     private ItemStack item;
-    private String command = "";
+    private String command;
 
     public Product(String name, ItemStack item, double price) {
         this.name = name;
         this.item = item;
         this.price = price;
+    }
+
+    public Product(String name, ItemStack item, double price, String command) {
+        this.name = name;
+        this.item = item;
+        this.price = price;
+        this.command = command;
     }
 
     public static Product getProductByName(String name, Category category) {
@@ -63,13 +70,13 @@ public class Product implements ConfigurationSerializable {
         ItemStack item = ConfigManager.getInventoryConfig().getItemStack(category + ".products." + name + ".item");
         double price = ConfigManager.getInventoryConfig().getDouble(category + ".products." + name + ".price");
         String command = ConfigManager.getInventoryConfig().getString(category + ".products." + name + ".command");
-        return new Product(name, item, price);
+        return new Product(name, item, price, command);
     }
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
-        map.put("price", Double.toString(price));
+        map.put("price", price);
         map.put("item", item);
         map.put("command", command);
         return map;

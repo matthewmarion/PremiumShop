@@ -18,6 +18,8 @@ null-product: '&c&lERROR &r&eProduct &b{name}&e could not be found.'
 new-product: '&a&lSUCCESS &r&eNew product with name &b{name}&e created.'
 removed-product: '&a&lSUCCESS &r&eRemoved product &b{name}&e.'
 create-cmd: '&a&lSUCCESS &r&eProduct command has been set to &b{cmd}&e.'
+not-enough-gold: '&c&lOOPS &r&eYou do not have enough gold. You can purchase gold on &6&l/buy&e.'
+purchased: '&a&lSUCCESS &r&eYou have purchased &b{product} &efor &6{gold} gold&e.'
 
 category-shop-name: '&3&lGold Shop Categories'
 product-shop-name: '&3&lGold Shop Products'

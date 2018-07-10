@@ -1,17 +1,15 @@
 package com.moojm.premiumshop.shop.listeners;
 
 import com.moojm.premiumshop.gui.ProductInventory;
-import com.moojm.premiumshop.gui.ShopInventory;
 import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.MessageUtils;
 import com.moojm.premiumshop.utils.Utils;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandException;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +17,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class GUIListeners implements Listener {
+
+    private HashMap<UUID, Product> pendingTransactions = new HashMap<>();
 
     @EventHandler
     public void on(InventoryClickEvent event) {
@@ -57,6 +60,12 @@ public class GUIListeners implements Listener {
                 return;
             }
 
+            if (!transactionIsPending(player)) {
+                addToPendingTransaction(player, product);
+                event.setCancelled(true);
+                return;
+            }
+
             purchase(player, product);
             event.setCancelled(true);
         }
@@ -70,7 +79,6 @@ public class GUIListeners implements Listener {
     private void executeCommand(Player player, Product product) {
         String command = Utils.replaceCommandPlaceholders(player, product.getCommand());
         try {
-            System.out.println(command);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         } catch (CommandException e) {
             MessageUtils.tell(player, MessageUtils.ERROR, null, null);
@@ -78,23 +86,37 @@ public class GUIListeners implements Listener {
 
     }
 
+    private void addToPendingTransaction(Player player, Product product) {
+        pendingTransactions.put(player.getUniqueId(), product);
+    }
+
+    private boolean transactionIsPending(Player player) {
+        return pendingTransactions.containsKey(player.getUniqueId());
+    }
+
+    private void confirmTransaction(Player player, Product product) {
+        if (!transactionIsPending(player)) {
+            return;
+        }
+        pendingTransactions.remove(player.getUniqueId());
+    }
+
     private boolean purchase(Player player, Product product) {
         Profile profile = Profile.getByPlayer(player);
         if (profile == null) {
-            System.out.println("Profile null");
+            MessageUtils.tell(player, MessageUtils.ERROR, null, null);
             return false;
         }
 
         if (!playerCanAfford(product, profile)) {
-            MessageUtils.tell(player, "&cNot enough gold.", null, null);
+            MessageUtils.tell(player, MessageUtils.NOT_ENOUGH_GOLD, null, null);
             return false;
         }
 
-        MessageUtils.tell(player, "&a&lPURCHASED", null, null);
+        MessageUtils.tellPurchase(player, product);
         executeCommand(player, product);
         return true;
     }
-
     private void handleError(Player player, InventoryClickEvent event) {
         MessageUtils.tell(player, MessageUtils.ERROR, null, null);
         event.setCancelled(true);

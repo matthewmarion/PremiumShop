@@ -79,7 +79,6 @@ public class ShopProductCommand extends ShopCommandExecutor {
             Product product = Product.getProductByName(name, category);
             category.removeProduct(product);
             MessageUtils.tell(sender, MessageUtils.REMOVED_PRODUCT, "{name}", name);
-            return;
         }
     }
 
