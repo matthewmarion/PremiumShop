@@ -14,7 +14,7 @@ public class ShopInventory {
     private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 11);
 
     public ShopInventory(Player player) {
-        final String shopName = Utils.toColor(Utils.getMessage("shop-name"));
+        final String shopName = Utils.toColor(Utils.getMessage("category-shop-name"));
         inv = Bukkit.createInventory(null, 27, shopName);
         createBorder();
         addCategories();

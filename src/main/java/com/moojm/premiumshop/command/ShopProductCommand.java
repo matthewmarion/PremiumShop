@@ -8,6 +8,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShopProductCommand extends ShopCommandExecutor {
 
@@ -47,9 +51,11 @@ public class ShopProductCommand extends ShopCommandExecutor {
             }
             ItemStack item = player.getItemInHand();
             if (item == null) {
-                player.sendMessage("null item");
+                MessageUtils.tell(sender, "&cItem cannot be null", null, null);
                 return;
             }
+            item = addCategoryToLore(item, category.getName());
+            System.out.println(item.getItemMeta().getLore());
             double price = Double.parseDouble(args[4]);
             Product product = new Product(name, item, price);
             category.addProduct(product);
@@ -75,5 +81,24 @@ public class ShopProductCommand extends ShopCommandExecutor {
             MessageUtils.tell(sender, MessageUtils.REMOVED_PRODUCT, "{name}", name);
             return;
         }
+    }
+
+    private ItemStack addCategoryToLore(ItemStack item, String categoryName) {
+        ItemStack product = item;
+        ItemMeta meta = product.getItemMeta();
+        List<String> lore = meta.getLore();
+        if (lore != null) {
+            lore.add(0, categoryName);
+            meta.setLore(lore);
+            product.setItemMeta(meta);
+            return product;
+        }
+        System.out.println("Does this hit?");
+
+        lore = new ArrayList<>();
+        lore.add(0, categoryName);
+        meta.setLore(lore);
+        product.setItemMeta(meta);
+        return product;
     }
 }

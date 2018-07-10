@@ -39,6 +39,19 @@ public class Category {
         return null;
     }
 
+    public static Category getCategoryFromItem(ItemStack item) {
+        List<String> lore = item.getItemMeta().getLore();
+        String categoryName = lore.get(0);
+        if (categoryName == null) {
+            return null;
+        }
+        Category category = getCategoryByName(categoryName);
+        if (category == null) {
+            return null;
+        }
+        return category;
+    }
+
     public boolean containsProductName(String name) {
         for (Product product : products) {
             if (product.getName().equals(name)) {

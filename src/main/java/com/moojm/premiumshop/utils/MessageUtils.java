@@ -38,6 +38,7 @@ public class MessageUtils {
     public static final String NO_PERMISSION = Utils.getMessage("no-permission");
     public static final String ONLY_CONSOLE = Utils.getMessage("only-console");
     public static final String ONLY_PLAYER = Utils.getMessage("only-player");
+    public static final String ERROR = Utils.getMessage("error");
     public static final String CREATE_SHOP = Utils.getMessage("create-shop");
     public static final String NULL_CATEGORY = Utils.getMessage("null-category");
     public static final String EXISTING_CATEGORY = Utils.getMessage("existing-category");

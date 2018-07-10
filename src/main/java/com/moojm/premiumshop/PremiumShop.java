@@ -3,6 +3,7 @@ package com.moojm.premiumshop;
 import com.moojm.premiumshop.command.CommandHandler;
 import com.moojm.premiumshop.command.ShopCommandExecutor;
 import com.moojm.premiumshop.config.ConfigManager;
+import com.moojm.premiumshop.profile.ProfileListeners;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.listeners.GUIListeners;
 import com.moojm.premiumshop.shop.listeners.NPCListeners;
@@ -42,6 +43,7 @@ public class PremiumShop extends JavaPlugin {
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new NPCListeners(), this);
         Bukkit.getPluginManager().registerEvents(new GUIListeners(), this);
+        Bukkit.getPluginManager().registerEvents(new ProfileListeners(), this);
     }
 
     public static PremiumShop getInstance() {
