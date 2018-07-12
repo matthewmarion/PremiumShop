@@ -75,6 +75,7 @@ public class GUIListeners implements Listener {
             if (doesCancel(item)) {
                 event.setCancelled(true);
                 player.closeInventory();
+                removePending(player);
                 return;
             }
 
@@ -88,8 +89,7 @@ public class GUIListeners implements Listener {
                 return;
             }
 
-            purchase(player, product);
-            confirmTransaction(player);
+            purchase(player, product, event);
         }
 
     }
@@ -120,6 +120,10 @@ public class GUIListeners implements Listener {
         pendingTransactions.put(player.getUniqueId(), product);
     }
 
+    private void removePending(Player player) {
+        pendingTransactions.remove(player.getUniqueId());
+    }
+
     private boolean transactionIsPending(Player player) {
         return pendingTransactions.containsKey(player.getUniqueId());
     }
@@ -131,22 +135,36 @@ public class GUIListeners implements Listener {
         pendingTransactions.remove(player.getUniqueId());
     }
 
-    private boolean purchase(Player player, Product product) {
+    private boolean purchase(Player player, Product product, InventoryClickEvent event) {
         Profile profile = Profile.getByPlayer(player);
         if (profile == null) {
             MessageUtils.tell(player, MessageUtils.ERROR, null, null);
+            event.setCancelled(true);
+            player.closeInventory();
             return false;
         }
 
         if (!playerCanAfford(product, profile)) {
             MessageUtils.tell(player, MessageUtils.NOT_ENOUGH_GOLD, null, null);
+            event.setCancelled(true);
+            player.closeInventory();
             return false;
         }
 
-        MessageUtils.tellPurchase(player, product);
+        withdrawGold(player, product.getPrice());
         executeCommand(player, product);
+        confirmTransaction(player);
+        MessageUtils.tellPurchase(player, product);
+        event.setCancelled(true);
+        player.closeInventory();
         return true;
     }
+
+    private void withdrawGold(Player player, double amount) {
+        Profile profile = Profile.getByPlayer(player);
+        profile.removeGold(amount);
+    }
+
     private void handleError(Player player, InventoryClickEvent event) {
         MessageUtils.tell(player, MessageUtils.ERROR, null, null);
         event.setCancelled(true);

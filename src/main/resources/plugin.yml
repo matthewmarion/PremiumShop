@@ -4,3 +4,4 @@ main: com.moojm.premiumshop.PremiumShop
 
 commands:
   pshop:
+  gold:

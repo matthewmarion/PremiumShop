@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 public abstract class ShopInventory {
 
     private Inventory inv;
-    private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 11);
+    private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 5);
 
     public ShopInventory(String shopNode) {
         final String shopName = Utils.toColor(Utils.getMessage(shopNode));

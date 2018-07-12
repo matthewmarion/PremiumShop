@@ -24,10 +24,10 @@ public class PurchaseInventory extends ShopInventory {
     }
 
     private void createLayout() {
-        int middle = 4;
+        int middle = 13;
         this.getInventory().setItem(middle, product.getItem());
-        this.getInventory().setItem(3, getPurchaseItem());
-        this.getInventory().setItem(5, getCancelItem());
+        this.getInventory().setItem(12, getPurchaseItem());
+        this.getInventory().setItem(14, getCancelItem());
     }
 
     private ItemStack getPurchaseItem() {

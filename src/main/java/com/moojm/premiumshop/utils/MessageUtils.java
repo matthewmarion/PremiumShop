@@ -58,5 +58,6 @@ public class MessageUtils {
     public static final String CREATE_CMD = Utils.getMessage("create-cmd");
     public static final String NOT_ENOUGH_GOLD = Utils.getMessage("not-enough-gold");
     public static final String PURCHASED = Utils.getMessage("purchased");
+    public static final String GOLD_BALANCE = Utils.getMessage("gold-balance");
 
 }

@@ -20,6 +20,8 @@ removed-product: '&a&lSUCCESS &r&eRemoved product &b{name}&e.'
 create-cmd: '&a&lSUCCESS &r&eProduct command has been set to &b{cmd}&e.'
 not-enough-gold: '&c&lOOPS &r&eYou do not have enough gold. You can purchase gold on &6&l/buy&e.'
 purchased: '&a&lSUCCESS &r&eYou have purchased &b{product} &efor &6{gold} gold&e.'
+gold-balance: '&e&lGOLD: &7{gold}'
 
 category-shop-name: '&3&lGold Shop Categories'
 product-shop-name: '&3&lGold Shop Products'
+purchase-shop-name: '&3&lGold Shop Purchase'
