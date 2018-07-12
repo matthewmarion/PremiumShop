@@ -3,6 +3,7 @@ package com.moojm.premiumshop.command;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.MessageUtils;
+import com.moojm.premiumshop.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -54,9 +55,8 @@ public class ShopProductCommand extends ShopCommandExecutor {
                 MessageUtils.tell(sender, "&cItem cannot be null", null, null);
                 return;
             }
-            item = addCategoryToLore(item, category.getName());
-            System.out.println(item.getItemMeta().getLore());
             double price = Double.parseDouble(args[4]);
+            item = addInfoToLore(item, price, category.getName());
             Product product = new Product(name, item, price);
             category.addProduct(product);
             MessageUtils.tell(sender, MessageUtils.NEW_PRODUCT, "{name}", name);
@@ -82,20 +82,22 @@ public class ShopProductCommand extends ShopCommandExecutor {
         }
     }
 
-    private ItemStack addCategoryToLore(ItemStack item, String categoryName) {
+    private ItemStack addInfoToLore(ItemStack item, double price, String categoryName) {
         ItemStack product = item;
         ItemMeta meta = product.getItemMeta();
         List<String> lore = meta.getLore();
+        String priceLore = Utils.toColor("&6&l" + String.valueOf(price) + " GOLD");
         if (lore != null) {
-            lore.add(0, categoryName);
+            lore.add(0, priceLore);
+            lore.add(1, categoryName);
             meta.setLore(lore);
             product.setItemMeta(meta);
             return product;
         }
-        System.out.println("Does this hit?");
 
         lore = new ArrayList<>();
-        lore.add(0, categoryName);
+        lore.add(0, priceLore);
+        lore.add(1, categoryName);
         meta.setLore(lore);
         product.setItemMeta(meta);
         return product;

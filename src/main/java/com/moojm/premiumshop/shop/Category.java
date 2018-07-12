@@ -41,7 +41,7 @@ public class Category {
 
     public static Category getCategoryFromItem(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
-        String categoryName = lore.get(0);
+        String categoryName = lore.get(1);
         if (categoryName == null) {
             return null;
         }

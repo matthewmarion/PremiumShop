@@ -1,6 +1,8 @@
 package com.moojm.premiumshop.shop.listeners;
 
 import com.moojm.premiumshop.gui.ProductInventory;
+import com.moojm.premiumshop.gui.PurchaseInventory;
+import com.moojm.premiumshop.gui.ShopInventory;
 import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
@@ -28,7 +30,7 @@ public class GUIListeners implements Listener {
     public void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Inventory inv = event.getInventory();
-        if (!isCategoryInventory(inv) && !isProductInventory(inv)) {
+        if (!isShopInventory(inv)) {
             return;
         }
 
@@ -63,13 +65,41 @@ public class GUIListeners implements Listener {
             if (!transactionIsPending(player)) {
                 addToPendingTransaction(player, product);
                 event.setCancelled(true);
+                selectProduct(player, product, category);
+                return;
+            }
+            event.setCancelled(true);
+        }
+
+        if (isPurchaseInventory(inv)) {
+            if (doesCancel(item)) {
+                event.setCancelled(true);
+                player.closeInventory();
+                return;
+            }
+
+            if (!doesPurchase(item)) {
+                event.setCancelled(true);
+                return;
+            }
+            Product product = pendingTransactions.get(player.getUniqueId());
+            if (product == null) {
+                MessageUtils.tell(player, MessageUtils.ERROR, null, null);
                 return;
             }
 
             purchase(player, product);
-            event.setCancelled(true);
+            confirmTransaction(player);
         }
 
+    }
+
+    private boolean doesPurchase(ItemStack item) {
+        return item.getType() == Material.EMERALD_BLOCK;
+    }
+
+    private boolean doesCancel(ItemStack item) {
+        return item.getType() == Material.REDSTONE_BLOCK;
     }
 
     private boolean playerCanAfford(Product product, Profile profile) {
@@ -94,7 +124,7 @@ public class GUIListeners implements Listener {
         return pendingTransactions.containsKey(player.getUniqueId());
     }
 
-    private void confirmTransaction(Player player, Product product) {
+    private void confirmTransaction(Player player) {
         if (!transactionIsPending(player)) {
             return;
         }
@@ -123,8 +153,13 @@ public class GUIListeners implements Listener {
     }
 
     private void selectCategory(Player player, Category category) {
-        ProductInventory productInventory = new ProductInventory(player, category);
+        ProductInventory productInventory = new ProductInventory(category);
         player.openInventory(productInventory.getInventory());
+    }
+
+    private void selectProduct(Player player, Product product, Category category) {
+        PurchaseInventory purchaseInventory = new PurchaseInventory(product, category);
+        player.openInventory(purchaseInventory.getInventory());
     }
 
     private boolean isValidClick(InventoryClickEvent event, ItemStack item) {
@@ -154,5 +189,13 @@ public class GUIListeners implements Listener {
 
     private boolean isProductInventory(Inventory inv) {
         return inv.getName().equals(Utils.toColor(Utils.getMessage("product-shop-name")));
+    }
+
+    private boolean isPurchaseInventory(Inventory inv) {
+        return inv.getName().equals(Utils.toColor(Utils.getMessage("purchase-shop-name"))) ;
+    }
+
+    private boolean isShopInventory(Inventory inv) {
+        return isProductInventory(inv) || isCategoryInventory(inv) || isPurchaseInventory(inv);
     }
 }

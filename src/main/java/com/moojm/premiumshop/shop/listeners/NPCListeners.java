@@ -1,6 +1,6 @@
 package com.moojm.premiumshop.shop.listeners;
 
-import com.moojm.premiumshop.gui.ShopInventory;
+import com.moojm.premiumshop.gui.CategoryInventory;
 import com.moojm.premiumshop.shop.Shop;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -17,7 +17,7 @@ public class NPCListeners implements Listener {
         if (!npc.getName().equals(Shop.getNPCName())) {
             return;
         }
-        ShopInventory shopInventory = new ShopInventory(player);
-        player.openInventory(shopInventory.getInventory());
+        CategoryInventory categoryInventory = new CategoryInventory();
+        player.openInventory(categoryInventory.getInventory());
     }
 }
