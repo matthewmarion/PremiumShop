@@ -34,6 +34,11 @@ public class Utils {
         placeholders.put("{player}", player.getName());
         Iterator it = placeholders.entrySet().iterator();
         String newCommand = command;
+
+        if (newCommand == null) {
+            return "";
+        }
+
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             if (command.contains(pair.getKey().toString())) {
