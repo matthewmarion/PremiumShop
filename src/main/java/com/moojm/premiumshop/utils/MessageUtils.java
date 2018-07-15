@@ -59,5 +59,8 @@ public class MessageUtils {
     public static final String NOT_ENOUGH_GOLD = Utils.getMessage("not-enough-gold");
     public static final String PURCHASED = Utils.getMessage("purchased");
     public static final String GOLD_BALANCE = Utils.getMessage("gold-balance");
+    public static final String ADD_GOLD = Utils.getMessage("add-gold");
+    public static final String REMOVE_GOLD = Utils.getMessage("remove-gold");
+    public static final String SET_GOLD = Utils.getMessage("set-gold");
 
 }

@@ -1,5 +1,6 @@
-package com.moojm.premiumshop.command;
+package com.moojm.premiumshop.command.shop;
 
+import com.moojm.premiumshop.command.PremiumCommandExecutor;
 import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.utils.MessageUtils;
@@ -8,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class ShopCategoryCommand extends ShopCommandExecutor {
+public class ShopCategoryCommand extends PremiumCommandExecutor {
 
     public ShopCategoryCommand() {
         setSubCommand("category");

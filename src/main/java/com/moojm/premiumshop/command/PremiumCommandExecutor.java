@@ -1,8 +1,15 @@
 package com.moojm.premiumshop.command;
 
+import com.moojm.premiumshop.utils.MessageUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
-public abstract class ShopCommandExecutor {
+import java.util.HashMap;
+
+public abstract class PremiumCommandExecutor {
 
     private String subCommand;
     private String permission;

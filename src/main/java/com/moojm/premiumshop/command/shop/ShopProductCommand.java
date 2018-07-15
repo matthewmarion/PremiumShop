@@ -1,10 +1,10 @@
-package com.moojm.premiumshop.command;
+package com.moojm.premiumshop.command.shop;
 
+import com.moojm.premiumshop.command.PremiumCommandExecutor;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.MessageUtils;
 import com.moojm.premiumshop.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopProductCommand extends ShopCommandExecutor {
+public class ShopProductCommand extends PremiumCommandExecutor {
 
     public ShopProductCommand() {
         setSubCommand("product");

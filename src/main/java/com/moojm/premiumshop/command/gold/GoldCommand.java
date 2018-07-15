@@ -1,4 +1,4 @@
-package com.moojm.premiumshop.command;
+package com.moojm.premiumshop.command.gold;
 
 import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.utils.MessageUtils;

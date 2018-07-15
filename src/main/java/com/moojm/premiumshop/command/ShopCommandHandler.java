@@ -1,5 +1,10 @@
 package com.moojm.premiumshop.command;
 
+import com.moojm.premiumshop.command.PremiumCommandExecutor;
+import com.moojm.premiumshop.command.shop.ShopCategoryCommand;
+import com.moojm.premiumshop.command.shop.ShopCmdCommand;
+import com.moojm.premiumshop.command.shop.ShopCreateCommand;
+import com.moojm.premiumshop.command.shop.ShopProductCommand;
 import com.moojm.premiumshop.utils.MessageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -10,11 +15,11 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class CommandHandler implements CommandExecutor {
+public class ShopCommandHandler implements CommandExecutor {
 
-    private HashMap<String, ShopCommandExecutor> commands = new HashMap<String, ShopCommandExecutor>();
+    private HashMap<String, PremiumCommandExecutor> commands = new HashMap<String, PremiumCommandExecutor>();
 
-    public CommandHandler() {
+    public ShopCommandHandler() {
         commands.put("create", new ShopCreateCommand());
         commands.put("category", new ShopCategoryCommand());
         commands.put("product", new ShopProductCommand());
@@ -40,7 +45,7 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
 
-            final ShopCommandExecutor command = commands.get(name);
+            final PremiumCommandExecutor command = commands.get(name);
 
             if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
                 sender.sendMessage(MessageUtils.NO_PERMISSION);

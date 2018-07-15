@@ -1,8 +1,7 @@
 package com.moojm.premiumshop;
 
-import com.moojm.premiumshop.command.CommandHandler;
-import com.moojm.premiumshop.command.GoldCommand;
-import com.moojm.premiumshop.command.ShopCommandExecutor;
+import com.moojm.premiumshop.command.ShopCommandHandler;
+import com.moojm.premiumshop.command.gold.GoldCommand;
 import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.profile.ProfileListeners;
 import com.moojm.premiumshop.shop.Category;
@@ -38,7 +37,7 @@ public class PremiumShop extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("pshop").setExecutor(new CommandHandler());
+        getCommand("pshop").setExecutor(new ShopCommandHandler());
         getCommand("gold").setExecutor(new GoldCommand());
     }
 

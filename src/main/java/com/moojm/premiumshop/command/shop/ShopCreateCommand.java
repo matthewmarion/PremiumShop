@@ -1,12 +1,13 @@
-package com.moojm.premiumshop.command;
+package com.moojm.premiumshop.command.shop;
 
+import com.moojm.premiumshop.command.PremiumCommandExecutor;
 import com.moojm.premiumshop.shop.Shop;
 import com.moojm.premiumshop.utils.MessageUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ShopCreateCommand extends ShopCommandExecutor {
+public class ShopCreateCommand extends PremiumCommandExecutor {
 
     public ShopCreateCommand() {
         setSubCommand("create");
