@@ -9,12 +9,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class GoldAddCommand extends PremiumCommandExecutor {
+public class GoldRemoveCommand extends PremiumCommandExecutor {
 
-    public GoldAddCommand() {
-        setSubCommand("add");
+    public GoldRemoveCommand() {
+        setSubCommand("remove");
         setPermission("pshop.admin");
-        setUsage("/gold add <player> <amount>");
+        setUsage("/gold remove <player> <amount>");
         setBoth();
         setLength(3);
     }
@@ -30,8 +30,8 @@ public class GoldAddCommand extends PremiumCommandExecutor {
         Profile profile = Profile.getByPlayer(target);
         String sAmount = args[2];
         double amount = Integer.valueOf(sAmount);
-        profile.addGold(amount);
-        MessageUtils.tell(target, MessageUtils.ADD_GOLD, "{amount}", sAmount);
-        MessageUtils.tell(sender, Utils.toColor("&aSUCCESS &r&7Added &a" + sAmount + "&7 to " + target.getName() + "s balance."), null, null);
+        profile.removeGold(amount);
+        MessageUtils.tell(target, MessageUtils.REMOVE_GOLD, "{amount}", sAmount);
+        MessageUtils.tell(sender, Utils.toColor("&aSUCCESS &r&7Removed &a" + sAmount + "&7 from " + target.getName() + "s balance."), null, null);
     }
 }

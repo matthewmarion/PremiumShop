@@ -39,6 +39,8 @@ public class Product implements ConfigurationSerializable {
 
     public static Product getProductByItem(ItemStack item, Category category) {
         for (Product product : category.getProducts()) {
+            System.out.println(product.getItem().getItemMeta().getDisplayName());
+            System.out.println(item.getItemMeta().getDisplayName());
             if (product.getItem().getItemMeta().getDisplayName().equals(item.getItemMeta().getDisplayName())) {
                 return product;
             }

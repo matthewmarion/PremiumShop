@@ -18,7 +18,7 @@ public class Shop {
 
     private int id;
     private Location location;
-    private final static String NPC_NAME = "&6&lGold Exchange";
+    private final static String NPC_NAME = "Gold Exchange";
     private final String skinName = "Disrupts";
 
     public Shop(Location location) {
@@ -70,7 +70,7 @@ public class Shop {
     }
 
     public void create() {
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, Utils.toColor(NPC_NAME));
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, Utils.toColor("&e" + NPC_NAME));
         npc.spawn(location);
         changeSkin(npc, skinName);
     }

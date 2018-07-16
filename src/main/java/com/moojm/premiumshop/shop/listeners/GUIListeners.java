@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,6 +30,7 @@ public class GUIListeners implements Listener {
     @EventHandler
     public void on(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
+        Profile profile = Profile.getByPlayer(player);
         Inventory inv = event.getInventory();
         if (!isShopInventory(inv)) {
             return;
@@ -57,13 +59,21 @@ public class GUIListeners implements Listener {
                 return;
             }
             Product product = Product.getProductByItem(item, category);
+
+            if (profile.hasPurchased(product)) {
+                event.setCancelled(true);
+                return;
+            }
+
             if (product == null) {
                 handleError(player, event);
                 return;
             }
-
+            System.out.println(pendingTransactions);
             if (!transactionIsPending(player)) {
                 addToPendingTransaction(player, product);
+                System.out.println("Here is the product: " + product.getName());
+                System.out.println("Added.");
                 event.setCancelled(true);
                 selectProduct(player, product, category);
                 return;
@@ -84,6 +94,7 @@ public class GUIListeners implements Listener {
                 return;
             }
             Product product = pendingTransactions.get(player.getUniqueId());
+            System.out.println("Product here: " + product);
             if (product == null) {
                 MessageUtils.tell(player, MessageUtils.ERROR, null, null);
                 return;
@@ -92,6 +103,16 @@ public class GUIListeners implements Listener {
             purchase(player, product, event);
         }
 
+    }
+
+    @EventHandler
+    public void on(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        Inventory inv = event.getInventory();
+        if (!isShopInventory(inv)) {
+            return;
+        }
+        removePending(player);
     }
 
     private boolean doesPurchase(ItemStack item) {
@@ -153,6 +174,7 @@ public class GUIListeners implements Listener {
 
         withdrawGold(player, product.getPrice());
         executeCommand(player, product);
+        profile.addPurchase(product);
         confirmTransaction(player);
         MessageUtils.tellPurchase(player, product);
         event.setCancelled(true);
@@ -171,7 +193,7 @@ public class GUIListeners implements Listener {
     }
 
     private void selectCategory(Player player, Category category) {
-        ProductInventory productInventory = new ProductInventory(category);
+        ProductInventory productInventory = new ProductInventory(category, player);
         player.openInventory(productInventory.getInventory());
     }
 

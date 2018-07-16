@@ -1,8 +1,9 @@
 package com.moojm.premiumshop;
 
-import com.moojm.premiumshop.command.ShopCommandHandler;
-import com.moojm.premiumshop.command.gold.GoldCommand;
+import com.moojm.premiumshop.command.gold.GoldCommandHandler;
+import com.moojm.premiumshop.command.shop.ShopCommandHandler;
 import com.moojm.premiumshop.config.ConfigManager;
+import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.profile.ProfileListeners;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.listeners.GUIListeners;
@@ -26,6 +27,7 @@ public class PremiumShop extends JavaPlugin {
     public void onDisable() {
         instance = null;
         saveShopInventory();
+        Profile.saveAll();
     }
 
     private void loadShopInventory() {
@@ -38,7 +40,7 @@ public class PremiumShop extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("pshop").setExecutor(new ShopCommandHandler());
-        getCommand("gold").setExecutor(new GoldCommand());
+        getCommand("gold").setExecutor(new GoldCommandHandler());
     }
 
     private void registerListeners() {

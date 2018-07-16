@@ -1,10 +1,11 @@
-package com.moojm.premiumshop.command;
+package com.moojm.premiumshop.command.gold;
 
 import com.moojm.premiumshop.command.PremiumCommandExecutor;
 import com.moojm.premiumshop.command.shop.ShopCategoryCommand;
 import com.moojm.premiumshop.command.shop.ShopCmdCommand;
 import com.moojm.premiumshop.command.shop.ShopCreateCommand;
 import com.moojm.premiumshop.command.shop.ShopProductCommand;
+import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.utils.MessageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,25 +16,25 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class ShopCommandHandler implements CommandExecutor {
+public class GoldCommandHandler implements CommandExecutor {
 
     private HashMap<String, PremiumCommandExecutor> commands = new HashMap<String, PremiumCommandExecutor>();
 
-    public ShopCommandHandler() {
-        commands.put("create", new ShopCreateCommand());
-        commands.put("category", new ShopCategoryCommand());
-        commands.put("product", new ShopProductCommand());
-        commands.put("cmd", new ShopCmdCommand());
+    public GoldCommandHandler() {
+        commands.put("set", new GoldSetCommand());
+        commands.put("add", new GoldAddCommand());
+        commands.put("remove", new GoldRemoveCommand());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("pshop")) {
+        if (cmd.getName().equalsIgnoreCase("gold")) {
 
             if (args.length == 0) {
-                MessageUtils.tellList(sender, MessageUtils.HELP);
+                sendGoldBalance(sender);
                 return true;
             }
+
             String name = args[0].toLowerCase();
 
             if (name.equalsIgnoreCase("help")) {
@@ -72,5 +73,23 @@ public class ShopCommandHandler implements CommandExecutor {
             command.execute(sender, args);
         }
         return false;
+    }
+
+    private void sendGoldBalance(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            MessageUtils.tell(sender, MessageUtils.ONLY_PLAYER, null, null);
+            return;
+        }
+
+        Player player = (Player) sender;
+        Profile profile = Profile.getByPlayer(player);
+        if (profile == null) {
+            MessageUtils.tell(player, MessageUtils.ERROR, null, null);
+            return;
+        }
+
+        String gold = String.valueOf(profile.getGold());
+        MessageUtils.tell(player, MessageUtils.GOLD_BALANCE, "{gold}", gold);
+        return;
     }
 }
