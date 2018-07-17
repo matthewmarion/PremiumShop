@@ -2,7 +2,6 @@ package com.moojm.premiumshop.shop.listeners;
 
 import com.moojm.premiumshop.gui.ProductInventory;
 import com.moojm.premiumshop.gui.PurchaseInventory;
-import com.moojm.premiumshop.gui.ShopInventory;
 import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
@@ -16,16 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class GUIListeners implements Listener {
-
-    private HashMap<UUID, Product> pendingTransactions = new HashMap<>();
 
     @EventHandler
     public void on(InventoryClickEvent event) {
@@ -53,12 +46,14 @@ public class GUIListeners implements Listener {
         }
 
         if (isProductInventory(inv)) {
-            Category category = Category.getCategoryFromItem(item);
+            Category category = Category.getCategoryFromProductItem(item);
             if (category == null) {
                 handleError(player, event);
                 return;
             }
             Product product = Product.getProductByItem(item, category);
+            System.out.println("Here comes item...");
+            System.out.println(product.getItem());
 
             if (profile.hasPurchased(product)) {
                 event.setCancelled(true);
@@ -69,15 +64,14 @@ public class GUIListeners implements Listener {
                 handleError(player, event);
                 return;
             }
-            System.out.println(pendingTransactions);
-            if (!transactionIsPending(player)) {
-                addToPendingTransaction(player, product);
-                System.out.println("Here is the product: " + product.getName());
-                System.out.println("Added.");
+
+            if (!playerCanAfford(product, profile)) {
+                MessageUtils.tell(player, MessageUtils.NOT_ENOUGH_GOLD, null, null);
                 event.setCancelled(true);
-                selectProduct(player, product, category);
                 return;
             }
+
+            selectProduct(player, product, category);
             event.setCancelled(true);
         }
 
@@ -85,7 +79,6 @@ public class GUIListeners implements Listener {
             if (doesCancel(item)) {
                 event.setCancelled(true);
                 player.closeInventory();
-                removePending(player);
                 return;
             }
 
@@ -93,8 +86,9 @@ public class GUIListeners implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            Product product = pendingTransactions.get(player.getUniqueId());
-            System.out.println("Product here: " + product);
+            ItemStack purchaseItem = inv.getItem(13);
+            Category purchaseCategory = Category.getCategoryFromProductItem(purchaseItem);
+            Product product = Product.getProductByItem(purchaseItem, purchaseCategory);
             if (product == null) {
                 MessageUtils.tell(player, MessageUtils.ERROR, null, null);
                 return;
@@ -103,16 +97,6 @@ public class GUIListeners implements Listener {
             purchase(player, product, event);
         }
 
-    }
-
-    @EventHandler
-    public void on(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        Inventory inv = event.getInventory();
-        if (!isShopInventory(inv)) {
-            return;
-        }
-        removePending(player);
     }
 
     private boolean doesPurchase(ItemStack item) {
@@ -137,25 +121,6 @@ public class GUIListeners implements Listener {
 
     }
 
-    private void addToPendingTransaction(Player player, Product product) {
-        pendingTransactions.put(player.getUniqueId(), product);
-    }
-
-    private void removePending(Player player) {
-        pendingTransactions.remove(player.getUniqueId());
-    }
-
-    private boolean transactionIsPending(Player player) {
-        return pendingTransactions.containsKey(player.getUniqueId());
-    }
-
-    private void confirmTransaction(Player player) {
-        if (!transactionIsPending(player)) {
-            return;
-        }
-        pendingTransactions.remove(player.getUniqueId());
-    }
-
     private boolean purchase(Player player, Product product, InventoryClickEvent event) {
         Profile profile = Profile.getByPlayer(player);
         if (profile == null) {
@@ -175,7 +140,6 @@ public class GUIListeners implements Listener {
         withdrawGold(player, product.getPrice());
         executeCommand(player, product);
         profile.addPurchase(product);
-        confirmTransaction(player);
         MessageUtils.tellPurchase(player, product);
         event.setCancelled(true);
         player.closeInventory();

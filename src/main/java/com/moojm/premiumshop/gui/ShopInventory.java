@@ -27,5 +27,4 @@ public abstract class ShopInventory {
         return inv;
     }
 
-
 }

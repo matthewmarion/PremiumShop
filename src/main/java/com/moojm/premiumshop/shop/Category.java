@@ -39,7 +39,7 @@ public class Category {
         return null;
     }
 
-    public static Category getCategoryFromItem(ItemStack item) {
+    public static Category getCategoryFromProductItem(ItemStack item) {
         List<String> lore = item.getItemMeta().getLore();
         String categoryName = lore.get(1);
         if (categoryName == null) {

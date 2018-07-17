@@ -53,7 +53,7 @@ public class Profile {
             if (purchasesSection.getKeys(false).size() != 0) {
                 for (String productName : purchasesSection.getKeys(false)) {
                     ItemStack item = ConfigManager.getProfilesConfig().getItemStack(key + ".purchases." + productName + ".item");
-                    Category category = Category.getCategoryFromItem(item);
+                    Category category = Category.getCategoryFromProductItem(item);
                     purchases.add(Product.load(productName, category.getName()));
                 }
             }
@@ -63,7 +63,7 @@ public class Profile {
     public void save() {
         ConfigManager.getProfilesConfig().set(uuid + ".gold", gold);
         for (Product product : purchases) {
-            ConfigManager.getProfilesConfig().set(uuid + ".purchases" + product.getName(), product.serialize());
+            ConfigManager.getProfilesConfig().set(uuid + ".purchases." + product.getName(), product.serialize());
         }
 
         ConfigManager.save(ConfigManager.profilesf, ConfigManager.getProfilesConfig());
@@ -102,10 +102,10 @@ public class Profile {
     }
 
     public boolean hasPurchased(Product product) {
-        System.out.println("Is this hit?");
         for (Product purchase : purchases) {
-            System.out.println("Maybe? this");
-            if (purchase.getName().equals(product.getName()) && product.getPrice() == purchase.getPrice()) {
+            String purchaseName = purchase.getName();
+            String productName = product.getName();
+            if (purchaseName.equals(productName)) {
                 return true;
             }
         }

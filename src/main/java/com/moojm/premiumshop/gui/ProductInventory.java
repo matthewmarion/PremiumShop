@@ -27,10 +27,10 @@ public class ProductInventory extends ShopInventory {
         for (Product product : category.getProducts()) {
             ItemStack item = product.getItem();
             if (profile.hasPurchased(product)) {
-                System.out.println("HAS PURCHASED.");
                 item = addPurchasedLore(product);
             }
             this.getInventory().setItem(10 + index, item);
+            System.out.println(product.getItem().getItemMeta().getLore());
             index++;
         }
     }
@@ -39,7 +39,12 @@ public class ProductInventory extends ShopInventory {
         ItemStack item = product.getItem();
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
-        lore.add(0, Utils.toColor("&a&lPURCHASED"));
+        String purchasedLine = "&a&lPURCHASED";
+        System.out.println(lore.get(0));
+        boolean alreadyPurchased = lore.get(0).equals(purchasedLine);
+        if (!lore.get(0).equals(purchasedLine)) {
+            lore.add(0, Utils.toColor("&a&lPURCHASED"));
+        }
         meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
