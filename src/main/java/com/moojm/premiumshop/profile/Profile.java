@@ -16,12 +16,12 @@ public class Profile {
     private UUID uuid;
     private Player player;
     private double gold;
-    private Set<Product> purchases;
+    private List<String> purchases;
 
     public Profile(UUID uuid, Player player) {
         this.uuid = uuid;
         this.player = player;
-        this.purchases = new HashSet<>();
+        this.purchases = new ArrayList<>();
 
         profiles.add(this);
     }
@@ -46,24 +46,21 @@ public class Profile {
     public void load() {
         this.gold = ConfigManager.getProfilesConfig().getDouble(uuid + ".gold");
         for (String key : ConfigManager.getProfilesConfig().getKeys(false)) {
-            ConfigurationSection purchasesSection = ConfigManager.getProfilesConfig().getConfigurationSection(key + ".purchases");
-            if (purchasesSection == null) {
+            List<String> purchaseStringList = ConfigManager.getProfilesConfig().getStringList(uuid + ".purchases");
+            if (purchaseStringList == null || purchaseStringList.size() == 0) {
                 break;
             }
-            if (purchasesSection.getKeys(false).size() != 0) {
-                for (String productName : purchasesSection.getKeys(false)) {
-                    ItemStack item = ConfigManager.getProfilesConfig().getItemStack(key + ".purchases." + productName + ".item");
-                    Category category = Category.getCategoryFromProductItem(item);
-                    purchases.add(Product.load(productName, category.getName()));
-                }
+            for (String purchase : purchaseStringList) {
+                purchases.add(purchase);
             }
+
         }
     }
 
     public void save() {
         ConfigManager.getProfilesConfig().set(uuid + ".gold", gold);
-        for (Product product : purchases) {
-            ConfigManager.getProfilesConfig().set(uuid + ".purchases." + product.getName(), product.serialize());
+        for (String product : purchases) {
+            ConfigManager.getProfilesConfig().set(uuid + ".purchases", purchases);
         }
 
         ConfigManager.save(ConfigManager.profilesf, ConfigManager.getProfilesConfig());
@@ -102,10 +99,8 @@ public class Profile {
     }
 
     public boolean hasPurchased(Product product) {
-        for (Product purchase : purchases) {
-            String purchaseName = purchase.getName();
-            String productName = product.getName();
-            if (purchaseName.equals(productName)) {
+        for (String purchase : purchases) {
+            if (purchase.equals(product.getName())) {
                 return true;
             }
         }
@@ -113,10 +108,10 @@ public class Profile {
     }
 
     public void addPurchase(Product product) {
-        purchases.add(product);
+        purchases.add(product.getName());
     }
 
-    public void setPurchases(Set<Product> purchases) {
+    public void setPurchases(List<String> purchases) {
         this.purchases = purchases;
     }
 

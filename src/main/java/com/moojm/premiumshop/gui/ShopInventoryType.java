@@ -29,6 +29,7 @@ public enum ShopInventoryType implements ShopInventoryInterface {
             }
             event.setCancelled(true);
             selectCategory(player, category);
+            event.setCancelled(true);
             return;
         }
     },
@@ -38,18 +39,13 @@ public enum ShopInventoryType implements ShopInventoryInterface {
             Category category = Category.getCategoryFromProductItem(item);
             Profile profile = Profile.getByPlayer(player);
             if (category == null) {
-                handleError(player, event);
-                return;
-            }
-            Product product = Product.getProductByItem(item, category);
-
-            if (profile.hasPurchased(product)) {
                 event.setCancelled(true);
                 return;
             }
-
+            Product product = Product.getProductByItem(item, category);
             if (product == null) {
-                handleError(player, event);
+                MessageUtils.tell(player, MessageUtils.ERROR, null, null);
+                event.setCancelled(true);
                 return;
             }
 
@@ -58,7 +54,6 @@ public enum ShopInventoryType implements ShopInventoryInterface {
                 event.setCancelled(true);
                 return;
             }
-
             selectProduct(player, product, category);
             event.setCancelled(true);
         }
@@ -148,11 +143,6 @@ public enum ShopInventoryType implements ShopInventoryInterface {
     private static void withdrawGold(Player player, double amount) {
         Profile profile = Profile.getByPlayer(player);
         profile.removeGold(amount);
-    }
-
-    private static void handleError(Player player, InventoryClickEvent event) {
-        MessageUtils.tell(player, MessageUtils.ERROR, null, null);
-        event.setCancelled(true);
     }
 
     private static boolean isCategoryInventory(Inventory inv) {

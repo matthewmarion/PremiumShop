@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseInventory extends ShopInventory {
+public class PurchaseInventory extends BaseShopInventory {
 
     private static final String SHOP_NODE = "purchase-shop-name";
     private Product product;

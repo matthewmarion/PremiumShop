@@ -2,7 +2,7 @@ package com.moojm.premiumshop.gui;
 
 import com.moojm.premiumshop.shop.Category;
 
-public class CategoryInventory extends ShopInventory {
+public class CategoryInventory extends BaseShopInventory {
 
     private static final String SHOP_NODE = "category-shop-name";
 

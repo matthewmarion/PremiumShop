@@ -4,49 +4,75 @@ import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
 import com.moojm.premiumshop.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class ProductInventory extends ShopInventory {
+public class ProductInventory {
 
+    private Inventory inv;
     private static final String SHOP_NODE = "product-shop-name";
     private Player player;
+    private final String purchaseLine = "&a&lPURCHASED";
+    private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 5);
 
     public ProductInventory(Category category, Player player) {
-        super(SHOP_NODE);
         this.player = player;
+        createInventory();
+        createBorder();
         addProducts(category);
     }
 
+    private void createInventory() {
+        inv = Bukkit.createInventory(null, 27, Utils.toColor(Utils.getMessage(SHOP_NODE)));
+    }
+
+    private void createBorder() {
+        for (int i = 0; i < inv.getSize(); i++) {
+            inv.setItem(i, border);
+        }
+    }
+
     private void addProducts(Category category) {
-        int index = 0;
+        int index = 10;
         Profile profile = Profile.getByPlayer(player);
         for (Product product : category.getProducts()) {
-            ItemStack item = product.getItem();
+            ItemStack item = product.getItem().clone();
             if (profile.hasPurchased(product)) {
-                item = addPurchasedLore(product);
+                item = addPurchaseLoreIfNotAlready(item);
+                inv.setItem(index, item);
+                index++;
+                continue;
             }
-            this.getInventory().setItem(10 + index, item);
-            System.out.println(product.getItem().getItemMeta().getLore());
+            inv.setItem(index, item);
             index++;
         }
     }
 
-    private ItemStack addPurchasedLore(Product product) {
-        ItemStack item = product.getItem();
-        ItemMeta meta = item.getItemMeta();
+    private ItemStack addPurchaseLoreIfNotAlready(ItemStack item) {
+        ItemStack purchaseItem = item;
+        ItemMeta meta = purchaseItem.getItemMeta();
         List<String> lore = meta.getLore();
-        String purchasedLine = "&a&lPURCHASED";
-        System.out.println(lore.get(0));
-        boolean alreadyPurchased = lore.get(0).equals(purchasedLine);
-        if (!lore.get(0).equals(purchasedLine)) {
-            lore.add(0, Utils.toColor("&a&lPURCHASED"));
+        if (containsPurchaseLine(lore)) {
+            return purchaseItem;
         }
+        lore.add(0, Utils.toColor(purchaseLine));
         meta.setLore(lore);
-        item.setItemMeta(meta);
-        return item;
+        purchaseItem.setItemMeta(meta);
+        return purchaseItem;
     }
+
+    private boolean containsPurchaseLine(List<String> lore) {
+        return lore.get(0).contains("PURCHASE");
+    }
+
+    public Inventory getInventory() {
+        return inv;
+    }
+
 }

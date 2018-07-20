@@ -1,8 +1,10 @@
 package com.moojm.premiumshop.shop;
 
 import com.moojm.premiumshop.config.ConfigManager;
+import com.moojm.premiumshop.profile.Profile;
 import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

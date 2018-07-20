@@ -33,11 +33,12 @@ public class ShopGUIListener implements Listener {
             return;
         }
         ItemStack item = event.getCurrentItem();
+        if (!isValidClick(event, item)) {
+            event.setCancelled(true);
+            return;
+        }
         invType.work(event, item, player, inv);
     }
-
-
-
 
     private boolean isValidClick(InventoryClickEvent event, ItemStack item) {
         if (isMovedOutInventory(event)) {
