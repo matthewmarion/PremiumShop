@@ -1,8 +1,9 @@
-package com.moojm.premiumshop.gui;
+package com.moojm.premiumshop.shop.gui;
 
 import com.moojm.premiumshop.profile.Profile;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
+import com.moojm.premiumshop.shop.Purchase;
 import com.moojm.premiumshop.utils.MessageUtils;
 import com.moojm.premiumshop.utils.Utils;
 import org.bukkit.Bukkit;
@@ -133,7 +134,8 @@ public enum ShopInventoryType implements ShopInventoryInterface {
 
         withdrawGold(player, product.getPrice());
         executeCommand(player, product);
-        profile.addPurchase(product);
+        Purchase purchase = new Purchase(product);
+        profile.addPurchase(purchase);
         MessageUtils.tellPurchase(player, product);
         event.setCancelled(true);
         player.closeInventory();

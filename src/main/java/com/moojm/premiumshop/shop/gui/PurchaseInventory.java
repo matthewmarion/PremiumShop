@@ -1,4 +1,4 @@
-package com.moojm.premiumshop.gui;
+package com.moojm.premiumshop.shop.gui;
 
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;

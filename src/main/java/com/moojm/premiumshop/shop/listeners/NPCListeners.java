@@ -1,6 +1,6 @@
 package com.moojm.premiumshop.shop.listeners;
 
-import com.moojm.premiumshop.gui.CategoryInventory;
+import com.moojm.premiumshop.shop.gui.CategoryInventory;
 import com.moojm.premiumshop.shop.Shop;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;

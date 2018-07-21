@@ -57,7 +57,7 @@ public class ShopProductCommand extends PremiumCommandExecutor {
             }
             double price = Double.parseDouble(args[4]);
             item = addInfoToLore(item, price, category.getName());
-            Product product = new Product(name, item, price);
+            Product product = new Product(name, item, price, categoryName);
             category.addProduct(product);
             MessageUtils.tell(sender, MessageUtils.NEW_PRODUCT, "{name}", name);
             return;
@@ -83,7 +83,7 @@ public class ShopProductCommand extends PremiumCommandExecutor {
     }
 
     private ItemStack addInfoToLore(ItemStack item, double price, String categoryName) {
-        ItemStack product = item;
+        ItemStack product = item.clone();
         ItemMeta meta = product.getItemMeta();
         List<String> lore = meta.getLore();
         String priceLore = Utils.toColor("&6&l" + String.valueOf(price) + " GOLD");

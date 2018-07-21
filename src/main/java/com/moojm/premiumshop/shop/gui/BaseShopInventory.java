@@ -1,4 +1,4 @@
-package com.moojm.premiumshop.gui;
+package com.moojm.premiumshop.shop.gui;
 
 import com.moojm.premiumshop.utils.Utils;
 import org.bukkit.Bukkit;

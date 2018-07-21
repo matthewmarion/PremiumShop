@@ -1,23 +1,12 @@
 package com.moojm.premiumshop.shop.listeners;
 
-import com.moojm.premiumshop.gui.ProductInventory;
-import com.moojm.premiumshop.gui.PurchaseInventory;
-import com.moojm.premiumshop.gui.ShopInventoryType;
+import com.moojm.premiumshop.shop.gui.ShopInventoryType;
 import com.moojm.premiumshop.profile.Profile;
-import com.moojm.premiumshop.shop.Category;
-import com.moojm.premiumshop.shop.Product;
-import com.moojm.premiumshop.shop.Shop;
-import com.moojm.premiumshop.utils.MessageUtils;
-import com.moojm.premiumshop.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

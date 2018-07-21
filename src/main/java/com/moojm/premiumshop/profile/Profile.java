@@ -3,10 +3,13 @@ package com.moojm.premiumshop.profile;
 import com.moojm.premiumshop.config.ConfigManager;
 import com.moojm.premiumshop.shop.Category;
 import com.moojm.premiumshop.shop.Product;
+import com.moojm.premiumshop.shop.Purchase;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Profile {
@@ -16,7 +19,7 @@ public class Profile {
     private UUID uuid;
     private Player player;
     private double gold;
-    private List<String> purchases;
+    private List<Purchase> purchases;
 
     public Profile(UUID uuid, Player player) {
         this.uuid = uuid;
@@ -45,24 +48,30 @@ public class Profile {
 
     public void load() {
         this.gold = ConfigManager.getProfilesConfig().getDouble(uuid + ".gold");
-        for (String key : ConfigManager.getProfilesConfig().getKeys(false)) {
-            List<String> purchaseStringList = ConfigManager.getProfilesConfig().getStringList(uuid + ".purchases");
-            if (purchaseStringList == null || purchaseStringList.size() == 0) {
-                break;
-            }
-            for (String purchase : purchaseStringList) {
-                purchases.add(purchase);
-            }
-
+        ConfigurationSection purchaseSection = ConfigManager.getProfilesConfig().getConfigurationSection(uuid + ".purchases");
+        if (purchaseSection == null) {
+            return;
         }
+        for (String productName : purchaseSection.getKeys(false)) {
+            String path = uuid + ".purchases." + productName;
+            Product product = loadProduct(productName, path);
+            String timestamp = ConfigManager.getProfilesConfig().getString(path + ".timestamp");
+            purchases.add(new Purchase(product, new Date()));
+        }
+    }
+
+    private Product loadProduct(String productName, String path) {
+        ItemStack item = ConfigManager.getProfilesConfig().getItemStack(path + ".item");
+        double price = ConfigManager.getProfilesConfig().getDouble(path + ".price");
+        String command = ConfigManager.getProfilesConfig().getString(path + ".command");
+        return new Product(productName, item, price, command);
     }
 
     public void save() {
         ConfigManager.getProfilesConfig().set(uuid + ".gold", gold);
-        for (String product : purchases) {
-            ConfigManager.getProfilesConfig().set(uuid + ".purchases", purchases);
+        for (Purchase purchase : purchases) {
+            ConfigManager.getProfilesConfig().set(uuid + ".purchases." + purchase.getProduct().getName(), purchase.serialize());
         }
-
         ConfigManager.save(ConfigManager.profilesf, ConfigManager.getProfilesConfig());
     }
 
@@ -99,19 +108,19 @@ public class Profile {
     }
 
     public boolean hasPurchased(Product product) {
-        for (String purchase : purchases) {
-            if (purchase.equals(product.getName())) {
+        for (Purchase purchase : purchases) {
+            if (purchase.getProduct().getName().equals(product.getName())) {
                 return true;
             }
         }
         return false;
     }
 
-    public void addPurchase(Product product) {
-        purchases.add(product.getName());
+    public void addPurchase(Purchase purchase) {
+        purchases.add(purchase);
     }
 
-    public void setPurchases(List<String> purchases) {
+    public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;
     }
 

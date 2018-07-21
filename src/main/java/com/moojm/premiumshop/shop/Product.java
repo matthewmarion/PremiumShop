@@ -22,9 +22,7 @@ public class Product implements ConfigurationSerializable {
     }
 
     public Product(String name, ItemStack item, double price, String command) {
-        this.name = name;
-        this.item = item;
-        this.price = price;
+        this(name, item, price);
         this.command = command;
     }
 
