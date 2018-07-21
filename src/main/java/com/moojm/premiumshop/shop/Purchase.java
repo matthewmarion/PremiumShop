@@ -16,30 +16,31 @@ public class Purchase implements ConfigurationSerializable {
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     private Product product;
-    private Date timestamp;
+    private String timestamp;
 
     public Purchase(Product product) {
         this.product = product;
-        timestamp = new Date();
+        Date date = new Date();
+        timestamp = dateFormat.format(date);
     }
 
-    public Purchase(Product product, Date timestamp) {
+    public Purchase(Product product, String timestamp) {
         this.product = product;
-        this.timestamp = timestamp;
+        this.timestamp = dateFormat.format(timestamp);
     }
 
     public Product getProduct() {
         return product;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
-        //map.put("timestamp", dateFormat.format(timestamp));
+        map.put("timestamp", timestamp);
         map.put("product", product);
         return map;
     }

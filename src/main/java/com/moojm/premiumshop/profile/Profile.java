@@ -56,7 +56,7 @@ public class Profile {
             String path = uuid + ".purchases." + productName;
             Product product = loadProduct(productName, path);
             String timestamp = ConfigManager.getProfilesConfig().getString(path + ".timestamp");
-            purchases.add(new Purchase(product, new Date()));
+            purchases.add(new Purchase(product, timestamp));
         }
     }
 
