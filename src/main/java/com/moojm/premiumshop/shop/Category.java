@@ -32,6 +32,17 @@ public class Category {
         categories.add(this);
     }
 
+    public static Category getCategoryByItem(ItemStack item) {
+        String name = item.getItemMeta().getDisplayName();
+        for (Category category : categories) {
+            String categoryDisplayName = category.getItem().getItemMeta().getDisplayName();
+            if (name.equals(categoryDisplayName)) {
+                return category;
+            }
+        }
+        return null;
+    }
+
     public static Category getCategoryByName(String name) {
         for (Category category : categories) {
             if (category.getName().equals(name)) {

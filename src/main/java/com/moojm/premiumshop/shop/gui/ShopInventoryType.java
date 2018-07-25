@@ -23,14 +23,14 @@ public enum ShopInventoryType implements ShopInventoryInterface {
     CATEGORY {
         @Override
         public void work(InventoryClickEvent event, ItemStack item, Player player, Inventory inv) {
-            Category category = Category.getCategoryByName(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
+            Category category = Category.getCategoryByItem(item);
             if (category == null) {
                 event.setCancelled(true);
                 return;
             }
+            System.out.println("Do we get here?");
             event.setCancelled(true);
             selectCategory(player, category);
-            event.setCancelled(true);
             return;
         }
     },
