@@ -26,7 +26,7 @@ public class Purchase implements ConfigurationSerializable {
 
     public Purchase(Product product, String timestamp) {
         this.product = product;
-        this.timestamp = dateFormat.format(timestamp);
+        this.timestamp = timestamp;
     }
 
     public Product getProduct() {

@@ -19,7 +19,7 @@ public class ShopProductCommand extends PremiumCommandExecutor {
     public ShopProductCommand() {
         setSubCommand("product");
         setPermission("pshop.admin");
-        setUsage("/pshop product <new|remove> <name> (category) (price)");
+        setUsage("/pshop product <new|remove> <name> <category> (price) (canRepurchase)");
         setPlayer(true);
         setLength(1);
     }
@@ -38,7 +38,7 @@ public class ShopProductCommand extends PremiumCommandExecutor {
         Category category = Category.getCategoryByName(categoryName);
 
         if (args[1].equalsIgnoreCase("new")) {
-            if (args.length != 5) {
+            if (args.length != 6) {
                 player.sendMessage(ChatColor.RED + getUsage());
                 return;
             }
@@ -57,7 +57,8 @@ public class ShopProductCommand extends PremiumCommandExecutor {
             }
             double price = Double.parseDouble(args[4]);
             item = addInfoToLore(item, price, category.getName());
-            Product product = new Product(name, item, price, categoryName);
+            boolean canBePurchased = Boolean.valueOf(args[5]);
+            Product product = new Product(name, item, price, canBePurchased);
             category.addProduct(product);
             MessageUtils.tell(sender, MessageUtils.NEW_PRODUCT, "{name}", name);
             return;
@@ -85,19 +86,11 @@ public class ShopProductCommand extends PremiumCommandExecutor {
     private ItemStack addInfoToLore(ItemStack item, double price, String categoryName) {
         ItemStack product = item.clone();
         ItemMeta meta = product.getItemMeta();
-        List<String> lore = meta.getLore();
-        String priceLore = Utils.toColor("&6&l" + String.valueOf(price) + " GOLD");
-        if (lore != null) {
-            lore.add(0, priceLore);
-            lore.add(1, categoryName);
-            meta.setLore(lore);
-            product.setItemMeta(meta);
-            return product;
-        }
-
-        lore = new ArrayList<>();
+        List<String> lore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
+        String priceLore = Utils.toColor("&e&l" + String.valueOf(price) + " GOLD");
         lore.add(0, priceLore);
-        lore.add(1, categoryName);
+        int lastSlot = priceLore.length();
+        lore.add(categoryName);
         meta.setLore(lore);
         product.setItemMeta(meta);
         return product;

@@ -14,15 +14,17 @@ public class Product implements ConfigurationSerializable {
     private double price;
     private ItemStack item;
     private String command;
+    private boolean canRepurchase;
 
-    public Product(String name, ItemStack item, double price) {
+    public Product(String name, ItemStack item, double price, boolean canRepurchase) {
         this.name = name;
         this.item = item;
         this.price = price;
+        this.canRepurchase = canRepurchase;
     }
 
-    public Product(String name, ItemStack item, double price, String command) {
-        this(name, item, price);
+    public Product(String name, ItemStack item, double price, boolean canRepurchase, String command) {
+        this(name, item, price, canRepurchase);
         this.command = command;
     }
 
@@ -66,11 +68,16 @@ public class Product implements ConfigurationSerializable {
         this.command = command;
     }
 
+    public boolean canRepurchase() {
+        return canRepurchase;
+    }
+
     public static Product load(String name, String category) {
         ItemStack item = ConfigManager.getInventoryConfig().getItemStack(category + ".products." + name + ".item");
         double price = ConfigManager.getInventoryConfig().getDouble(category + ".products." + name + ".price");
+        boolean canRepurchase = ConfigManager.getInventoryConfig().getBoolean(category + ".products." + name + ".can-repurchase");
         String command = ConfigManager.getInventoryConfig().getString(category + ".products." + name + ".command");
-        return new Product(name, item, price, command);
+        return new Product(name, item, price, canRepurchase, command);
     }
 
     @Override
@@ -78,6 +85,7 @@ public class Product implements ConfigurationSerializable {
         Map<String, Object> map = new HashMap<>();
         map.put("price", price);
         map.put("item", item);
+        map.put("can-repurchase", canRepurchase);
         map.put("command", command);
         return map;
     }

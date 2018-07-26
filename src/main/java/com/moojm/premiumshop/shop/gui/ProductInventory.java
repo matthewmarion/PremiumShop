@@ -19,12 +19,10 @@ public class ProductInventory {
     private static final String SHOP_NODE = "product-shop-name";
     private Player player;
     private final String purchaseLine = "&a&lPURCHASED";
-    private final ItemStack border = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 5);
 
     public ProductInventory(Category category, Player player) {
         this.player = player;
         createInventory();
-        createBorder();
         addProducts(category);
     }
 
@@ -32,25 +30,16 @@ public class ProductInventory {
         inv = Bukkit.createInventory(null, 27, Utils.toColor(Utils.getMessage(SHOP_NODE)));
     }
 
-    private void createBorder() {
-        for (int i = 0; i < inv.getSize(); i++) {
-            inv.setItem(i, border);
-        }
-    }
-
     private void addProducts(Category category) {
-        int index = 10;
         Profile profile = Profile.getByPlayer(player);
         for (Product product : category.getProducts()) {
             ItemStack item = product.getItem().clone();
-            if (profile.hasPurchased(product)) {
+            if (profile.hasPurchased(product) && !product.canRepurchase()) {
                 item = addPurchaseLoreIfNotAlready(item);
-                inv.setItem(index, item);
-                index++;
+                inv.addItem(item);
                 continue;
             }
-            inv.setItem(index, item);
-            index++;
+            inv.addItem(item);
         }
     }
 

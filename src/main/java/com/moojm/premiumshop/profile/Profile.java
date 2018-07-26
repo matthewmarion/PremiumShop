@@ -63,8 +63,9 @@ public class Profile {
     private Product loadProduct(String productName, String path) {
         ItemStack item = ConfigManager.getProfilesConfig().getItemStack(path + ".item");
         double price = ConfigManager.getProfilesConfig().getDouble(path + ".price");
+        boolean canRepurchase = ConfigManager.getProfilesConfig().getBoolean(path + ".can-repurchase");
         String command = ConfigManager.getProfilesConfig().getString(path + ".command");
-        return new Product(productName, item, price, command);
+        return new Product(productName, item, price, canRepurchase, command);
     }
 
     public void save() {
