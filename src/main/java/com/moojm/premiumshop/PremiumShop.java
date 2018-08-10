@@ -1,6 +1,8 @@
 package com.moojm.premiumshop;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
+import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
+import be.maximvdw.placeholderapi.PlaceholderReplacer;
 import com.moojm.premiumshop.command.gold.GoldCommandHandler;
 import com.moojm.premiumshop.command.shop.ShopCommandHandler;
 import com.moojm.premiumshop.config.ConfigManager;
@@ -13,6 +15,7 @@ import com.moojm.premiumshop.shop.listeners.ShopGUIListener;
 import com.moojm.premiumshop.shop.listeners.NPCListeners;
 import com.moojm.premiumshop.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +33,7 @@ public class PremiumShop extends JavaPlugin {
         loadShopInventory();
         registerCommands();
         registerListeners();
-        registerPlaceholders();
+        loadGoldPlaceholder();
     }
 
     public void onDisable() {
@@ -58,22 +61,19 @@ public class PremiumShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ProfileListeners(), this);
     }
 
-    private boolean placeholderAPIEnabled() {
-        return Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
-    }
+    private void loadGoldPlaceholder() {
+        if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
+            // The plugin is enabled
+            PlaceholderAPI.registerPlaceholder(this, "premiumshopgold",
+                    new PlaceholderReplacer() {
 
-    private void registerPlaceholders() {
-        if (placeholderAPIEnabled()) {
-            PlaceholderAPI.registerPlaceholder(PremiumShop.getInstance(), "premiumshop_gold",
-                    event -> {
-                        System.out.println("Testing this????");
-                        Player player = event.getPlayer();
-                        Profile profile = Profile.getByPlayer(player);
-                        if (profile == null) {
-                            return "";
+                        @Override
+                        public String onPlaceholderReplace(PlaceholderReplaceEvent event) {
+                            Player player = event.getPlayer();
+                            Profile profile = Profile.getByPlayer(player);
+                            return ChatColor.YELLOW + String.valueOf(profile.getGold());
                         }
-                        String gold = Utils.convertMoney(profile.getGold());
-                        return gold;
+
                     });
         }
     }

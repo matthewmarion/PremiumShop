@@ -1,7 +1,7 @@
 name: ${project.name}
 version: ${project.version}
 main: com.moojm.premiumshop.PremiumShop
-softdepends: [Citizens, MVdWPlaceholderAPI]
+depend: [Citizens, MVdWPlaceholderAPI]
 
 commands:
   pshop:
