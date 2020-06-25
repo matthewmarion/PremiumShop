@@ -30,3 +30,15 @@ Increased transaction turnover rate by 65%.
 * Gold
   * Premium currency which is used to purchase merchandise.
   
+  
+## Dependencies
+
+* Citizens - net.citizensnpcs
+* MVdWPlaceholderAPI - be.maximvdw
+
+## Getting Started
+
+1. Clone the project.
+2. Build with Maven.
+3. Move target jar into plugins directory.
+  
